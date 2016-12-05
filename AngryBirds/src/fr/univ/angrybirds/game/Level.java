@@ -9,7 +9,7 @@ import fr.univ.angrybirds.elements.Element;
 public class Level {
 	
 	private List<Element> elementList;
-	
+	private String background;
 	
 	public Level(){
 		elementList = new ArrayList<Element>();
@@ -19,8 +19,16 @@ public class Level {
 		return elementList;
 	}
 
+	public String getBackground(){
+		return background;
+	}
+	
 	public void setElementList(List<Element> elementList) {
 		this.elementList = elementList;
+	}
+	
+	public void setBackground(String background){
+		this.background = background;
 	}
 	
 	public void addElement(Element elem){
