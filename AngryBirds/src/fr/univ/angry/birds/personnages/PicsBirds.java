@@ -3,16 +3,17 @@ package fr.univ.angry.birds.personnages;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
 
 public class PicsBirds implements IBird{
 
 	private double posX;
 	private double posY;
-	private double startPosX;
-	private double startPosY;
+	private int startPosX;
+	private int startPosY;
 	private double velocityX;
 	private double velocityY;
-	private String picURL;
+	private String picName;
 	
 	
 	/**
@@ -33,7 +34,7 @@ public class PicsBirds implements IBird{
 		this.posY 		= posY;
 		this.velocityX 	= velocityX;
 		this.velocityY 	= velocityY;
-		this.picURL		= picURL;
+		this.picName		= picURL;
 	}
 	
 	
@@ -58,7 +59,7 @@ public class PicsBirds implements IBird{
 		return startPosX;
 	}
 
-	public void setStartPosX(double startPosX) {
+	public void setStartPosX(int startPosX) {
 		this.startPosX = startPosX;
 	}
 
@@ -66,7 +67,7 @@ public class PicsBirds implements IBird{
 		return startPosY;
 	}
 
-	public void setStartPosY(double startPosY) {
+	public void setStartPosY(int startPosY) {
 		this.startPosY = startPosY;
 	}
 
@@ -86,24 +87,23 @@ public class PicsBirds implements IBird{
 		this.velocityY = velocityY;
 	}
 
-	public String getPicURL() {
-		return picURL;
+	public String getPicName() {
+		return picName;
 	}
 
 	public void setPicURL(String picURL) {
-		this.picURL = picURL;
+		this.picName = picURL;
 	}
 	// End Getters and Setters
-	
 
 	
 	@Override
-	public Graphics build(Graphics graphic, int startPosX, int StartPosY) {
+	public Graphics build(Graphics graphic, int startPosX, int startPosY) {
 		this.startPosX = startPosX;
 		this.startPosY = startPosY;
-//		graphic.setColor(Color.RED);
-//        graphic.fillOval((int) posX - startPosX, (int) posY - startPosY, 40, 40);
-//        graphic.drawImage(img, x, y, null);
+		
+		graphic.drawImage(Toolkit.getDefaultToolkit().getImage(picName), (int) startPosX - 20, (int) startPosY - 60, 50, 50, null);
+		
 		return graphic;
 	}
 

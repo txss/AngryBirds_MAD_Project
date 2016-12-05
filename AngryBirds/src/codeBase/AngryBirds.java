@@ -129,7 +129,7 @@ public class AngryBirds extends Panel implements Runnable, MouseListener, MouseM
         // oiseau
         g.setColor(Color.RED);
         if(selecting) g.drawLine((int) birdX, (int) birdY, mouseX, mouseY); // montre l'angle et la vitesse
-        g.drawImage(Toolkit.getDefaultToolkit().getImage(""), (int) birdX - 20, (int) birdY - 60, null);
+        g.drawImage(Toolkit.getDefaultToolkit().getImage("plainicon.com-64851-256px-36c.png"), (int) birdX - 20, (int) birdY - 60, null);
 //        g.fillOval((int) birdX - 20, (int) birdY - 80, 40, 40);
 
         // cochon
