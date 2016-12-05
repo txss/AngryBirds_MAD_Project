@@ -1,18 +1,24 @@
 package test;
 
-import java.awt.*;
-import java.awt.geom.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Panel;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-import fr.univ.angry.birds.personnages.ClassiqueBirds;
-import fr.univ.angry.birds.personnages.IBird;
-
-import java.awt.event.*;
-import java.io.*;
+import fr.univ.angrybirds.utils.Point;
 
 public class Angry extends Panel implements Runnable, MouseListener, MouseMotionListener {
-    double birdX, birdY, velocityX, velocityY;  // informations relatives à l'oiseau
-    double pigX, pigY;                          // informations relatives au cochon
+    double velocityX, velocityY;  // informations relatives à l'oiseau
+    Point bird = new Point();
+    Point pig = new Point();
     double gravity;                             // gravité
     int mouseX, mouseY;                         // position de la souris lors de la sélection
     String message;                             // message à afficher en haut de l'écran
@@ -20,13 +26,6 @@ public class Angry extends Panel implements Runnable, MouseListener, MouseMotion
     boolean gameOver;                           // vrai lorsque le joueur a touché un bord ou le cochon
     boolean selecting;                          // vrai lorsque le joueur sélectionne l'angle et la vitesse
     Image buffer;                               // image pour le rendu hors écran
-
-    // calcule la distance entre deux points
-    static double distance(double x1, double y1, double x2, double y2) {
-        double dx = x1 - x2;
-        double dy = y1 - y2;
-        return Math.sqrt(dx * dx + dy * dy);
-    }
 
     // constructeur
     Angry() {
@@ -47,8 +46,8 @@ public class Angry extends Panel implements Runnable, MouseListener, MouseMotion
         if(gameOver) {
             init();
         } else if(selecting) {
-            velocityX = (birdX - mouseX) / 20.0;
-            velocityY = (birdY - mouseY) / 20.0;
+            velocityX = (bird.getX() - mouseX) / 20.0;
+            velocityY = (bird.getY() - mouseY) / 20.0;
             message = "L'oiseau prend sont envol";
             selecting = false;
         }
@@ -65,12 +64,12 @@ public class Angry extends Panel implements Runnable, MouseListener, MouseMotion
     void init() {
         gameOver = false;
         selecting = true;
-        birdX = 100;
-        birdY = 400;
+        bird.setX(100);
+        bird.setY(400);
         velocityX = 0;
         velocityY = 0;
-        pigX = Math.random() * 500 + 200; // position aléatoire pour le cochon
-        pigY = 480;
+        pig.setX(Math.random() * 500 + 200); // position aléatoire pour le cochon
+        pig.setY(480);
         message = "Choisissez l'angle et la vitesse.";
     }
 
@@ -90,16 +89,16 @@ public class Angry extends Panel implements Runnable, MouseListener, MouseMotion
             if(!gameOver && !selecting) {
 
                 // moteur physique
-                birdX += velocityX;
-                birdY += velocityY;
+                bird.setX(bird.getX()+ velocityX);
+                bird.setY(bird.getY()+ velocityY);
                 velocityY += gravity;
-
+                
                 // conditions de victoire
-                if(distance(birdX, birdY, pigX, pigY) < 35) {
+                if(Point.getDistance(bird, pig) < 35) {
                     stop();
                     message = "Gagné : cliquez pour recommencer.";
                     score++;
-                } else if(birdX < 20 || birdX > 780 || birdY < 0 || birdY > 480) {
+                } else if(bird.getX() < 20 || bird.getX() > 780 || bird.getY() < 0 || bird.getY() > 480) {
                     stop();
                     message = "Perdu : cliquez pour recommencer.";
                 }
@@ -131,12 +130,12 @@ public class Angry extends Panel implements Runnable, MouseListener, MouseMotion
 
         // oiseau
         g.setColor(Color.RED);
-        if(selecting) g.drawLine((int) birdX, (int) birdY, mouseX, mouseY); // montre l'angle et la vitesse
-        g.fillOval((int) birdX - 20, (int) birdY - 20, 40, 40);
+        if(selecting) g.drawLine((int) bird.getX(), (int) bird.getY(), mouseX, mouseY); // montre l'angle et la vitesse
+        g.fillOval((int) bird.getX() - 20, (int) bird.getY() - 20, 40, 40);
 
         // cochon
         g.setColor(Color.GREEN);
-        g.fillOval((int) pigX - 20, (int) pigY - 20, 40, 40);
+        g.fillOval((int) pig.getX() - 20, (int) pig.getY()- 20, 40, 40);
 
         // messages
         g.setColor(Color.BLACK);
@@ -154,7 +153,7 @@ public class Angry extends Panel implements Runnable, MouseListener, MouseMotion
 
     // met le jeu dans une fenêtre
     public static void main(String args[]) {
-        Frame frame = new Frame("Oiseau pas content");
+        Frame frame = new Frame("Angry BIRDS");
         final Angry obj = new Angry();
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {

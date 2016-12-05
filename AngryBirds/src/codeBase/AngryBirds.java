@@ -135,7 +135,7 @@ public class AngryBirds extends Panel implements Runnable, MouseListener, MouseM
         // cochon
         g.setColor(Color.GREEN);
 //        g.fillOval((int) pigX - 20, (int) pigY - 20, 40, 40);
-        g.drawImage(Toolkit.getDefaultToolkit().getImage("106596436.png"), (int) pigX - 20, (int) pigY - 60, null);
+        g.drawImage(Toolkit.getDefaultToolkit().getImage("giphy.gif"), (int) pigX - 20, (int) pigY - 60, 40, 40, null);
         
         // messages
         g.setColor(Color.BLACK);
