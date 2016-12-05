@@ -118,7 +118,7 @@ public class AngryBirds extends Panel implements Runnable, MouseListener, MouseM
 
         
         // fond
-//        g.setColor(Color.WHITE);
+        g.setColor(Color.WHITE);
         g.drawImage(Toolkit.getDefaultToolkit().getImage("fond.png"), 0, 0,  null);
 //        g.fillRect(0, 0, getWidth(), getHeight());
 
