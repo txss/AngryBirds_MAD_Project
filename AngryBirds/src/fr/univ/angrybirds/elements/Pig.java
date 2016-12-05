@@ -8,17 +8,18 @@ import fr.univ.angrybirds.utils.Point;
 public class Pig extends Element{
 
 	private Point startPoint;
-	private int height;
-	private int width;
 	
 	
 	public Pig(Point position, String picName, int picHeight, int picWidth){
-		super(position, picName);
+		super(position, picName, 50, 50);
 		this.startPoint = position;
-		this.height = picHeight;
-		this.width = picWidth;
 	}
 
+	public Pig(Point position, String picName){
+		super(position, picName);
+		this.startPoint = position;
+	}
+	
 	public Pig() {}
 
 	
@@ -27,30 +28,13 @@ public class Pig extends Element{
 		return startPoint;
 	}
 
-	public int getHeight() {
-		return height;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
 	public void setStartPoint(Point startPoint) {
 		this.startPoint = startPoint;
 	}
-
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-	
 	//End getters and setters
 
 	public Graphics build(Graphics graphic) {
-		graphic.drawImage(Toolkit.getDefaultToolkit().getImage(picName), (int) startPoint.getX() - width/2, (int) startPoint.getY() - height/2, height, width, null);
+		graphic.drawImage(Toolkit.getDefaultToolkit().getImage(picName), (int) startPoint.getX() - super.getWidth()/2, (int) startPoint.getY() - super.getHeight()/2, super.getHeight(), super.getWidth(), null);
 		return graphic;
 	}	
 	

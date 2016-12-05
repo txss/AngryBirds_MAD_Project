@@ -22,10 +22,10 @@ public class LevelBuilder {
 		Point pigPos = new Point(Math.random() * 500 + 200, 480);
 		Point pigPos2 = new Point(320, 480);
 		
-		Element bird = new Bird(birdPos, 0, 0, "Angry_Birds.png", 50, 50);
-		Element pig  = new Pig(pigPos, "106596436.png", 50, 50);
-		Element pig2  = new Pig(pigPos2, "giphy.gif", 50, 50);
-		
+		Element bird = new Bird(birdPos, "Angry_Birds.png");
+		Element pig  = new Pig(pigPos, "106596436.png");
+		Element pig2  = new Pig(pigPos2, "giphy.gif");
+
 		easy.addElement(bird);
 		easy.addElement(pig);
 		easy.addElement(pig2);

@@ -10,8 +10,6 @@ public class Bird extends Element{
 	private Point startPoint;
 	private double velocityX;
 	private double velocityY;
-	private int height;
-	private int width;
 	
 	
 	/**
@@ -21,13 +19,11 @@ public class Bird extends Element{
 	 * @param velocityX X velocity of the bird
 	 * @param velocityY Y velocity of the bird
 	 */
-	public Bird(Point position, double velocityX, double velocityY, String picName, int picHeigth, int picWidth){
+	public Bird(Point position, String picName){
 		super(position, picName);
 		this.startPoint = position;
-		this.velocityX 	= velocityX;
-		this.velocityY 	= velocityY;
-		this.height = picHeigth;
-		this.width = picWidth;
+		this.velocityX 	= 0;
+		this.velocityY 	= 0;
 	}
 
 	public Bird() {}
@@ -39,14 +35,6 @@ public class Bird extends Element{
 	
 	public double getVelocityX() {
 		return velocityX;
-	}
-	
-	public int getHeight() {
-		return height;
-	}
-
-	public int getWidth() {
-		return width;
 	}
 	
 	public double getVelocityY() {
@@ -65,19 +53,13 @@ public class Bird extends Element{
 		this.velocityY = velocityY;
 	}
 
-	public void setHeight(int height) {
-		this.height = height;
-	}
 
-	public void setWidth(int width) {
-		this.width = width;
-	}
 	// End Getters and Setters
 	
 	
 	@Override
 	public Graphics build(Graphics graphic) {
-		graphic.drawImage(Toolkit.getDefaultToolkit().getImage(picName), (int) startPoint.getX() - height/2, (int) startPoint.getY() - width/2, height, width, null);
+		graphic.drawImage(Toolkit.getDefaultToolkit().getImage(picName), (int) startPoint.getX() - super.getHeight()/2, (int) startPoint.getY() - super.getWidth()/2, super.getHeight(), super.getWidth(), null);
 		return graphic;
 	}
 

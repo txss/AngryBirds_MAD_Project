@@ -26,10 +26,10 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 	private static final long serialVersionUID = -5937904086840376212L;
 
 	ArrayList<Level> levels;
+	
 	Image buffer;
-
-	private boolean gameOver=false;
-	private boolean selecting=true;
+	private boolean gameOver = false;
+	private boolean selecting = true;
 	private int mouseX;
 	private int mouseY; 
 	double gravite = 0.1;
@@ -55,7 +55,7 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 	public void paint(Graphics g2) {
 		if(buffer == null) buffer = createImage(800, 600);
 		Graphics2D g = (Graphics2D) buffer.getGraphics();
-
+		
 		Bird b = (Bird) (levels.get(0).getElementList().get(0));
 		
 		g.setColor(Color.WHITE);
