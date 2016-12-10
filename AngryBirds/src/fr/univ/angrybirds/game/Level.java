@@ -12,13 +12,14 @@ import fr.univ.angrybirds.utils.Point;
 
 public class Level {
 	
-	private List<Element> elementList;
+	private volatile List<Element> elementList;
 	private String background;
 	private String messageText;
 	private Point messagePos;
 	private Color color;
 	private String scoreText;
 	private Point scorePos;
+	private int score = 0;
 	
 	private int windHeight;
 	private int windWidth;
@@ -34,7 +35,7 @@ public class Level {
 	}
 	
 	// Begin getters and setters
-	public List<Element> getElementList() {
+	public synchronized List<Element> getElementList() {
 		return elementList;
 	}
 
@@ -42,7 +43,7 @@ public class Level {
 		return background;
 	}
 	
-	public Color geColor() {
+	public Color getColor() {
 		return color;
 	}
 
@@ -70,6 +71,14 @@ public class Level {
 		return windWidth;
 	}
 
+	public int getScore() {
+		return score;
+	}
+
+	public synchronized void setScore(int score) {
+		this.score = score;
+	}
+
 	public void setWindHeight(int windHeight) {
 		this.windHeight = windHeight;
 	}
@@ -86,7 +95,7 @@ public class Level {
 		this.scorePos = scorePos;
 	}
 
-	public void setMessageText(String messageText) {
+	public synchronized void setMessageText(String messageText) {
 		this.messageText = messageText;
 	}
 
@@ -94,11 +103,11 @@ public class Level {
 		this.color = color;
 	}
 
-	public void setScoreText(String scoreText) {
+	public synchronized void setScoreText(String scoreText) {
 		this.scoreText = scoreText;
 	}
 
-	public void setElementList(List<Element> elementList) {
+	public synchronized void setElementList(List<Element> elementList) {
 		this.elementList = elementList;
 	}
 	
@@ -107,10 +116,14 @@ public class Level {
 	}
 	// End getters and setters
 	
+	public synchronized void calculScore(Element e){
+		this.score += e.getValue();
+		this.setScoreText("" + score);
+	}
 	
 	public void addElement(Element elem){
 		elementList.add(elem);
-	}
+	}//addElement()
 	
 	
 	public Graphics buildLevel(Graphics g){
@@ -124,4 +137,4 @@ public class Level {
 		
 		return g2;
 	}
-}
+}//Level

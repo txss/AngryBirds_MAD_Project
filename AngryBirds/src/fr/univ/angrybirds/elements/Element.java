@@ -10,6 +10,7 @@ public abstract class Element {
 	String picName;
 
 	private double gravity;
+	private int value;
 	private int height;
 	private int width;
 	
@@ -27,6 +28,7 @@ public abstract class Element {
 		this.gravity = 0.1; // default value
 		this.height = 50;	// default value
 		this.width = 50;	// default value
+		this.value = 50;
 		
 	}
 	
@@ -36,6 +38,7 @@ public abstract class Element {
 		this.gravity = gravity;
 		this.height = 50;	// default value
 		this.width = 50;	// default value
+		this.value = 50;
 	}
 
 	public Element(Point pos, String picName, double gravity, int picHeigth, int picWidth){
@@ -44,6 +47,7 @@ public abstract class Element {
 		this.gravity = gravity;
 		this.height = picHeigth;
 		this.width = picWidth;
+		this.value = 50;
 	}
 	
 	public Element(Point pos, String picName, int picHeigth, int picWidth){
@@ -52,6 +56,7 @@ public abstract class Element {
 		this.gravity = 0.1;
 		this.height = picHeigth;
 		this.width = picWidth;
+		this.value = 50;
 	}
 	
 	// Begin getters and setters
@@ -73,6 +78,14 @@ public abstract class Element {
 
 	public int getWidth() {
 		return width;
+	}
+
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
 	}
 
 	public void setGravity(double gravity) {
