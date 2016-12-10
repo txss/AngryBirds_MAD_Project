@@ -32,8 +32,8 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 	private boolean selecting = true;
 	private int mouseX;
 	private int mouseY; 
-	double gravite = 0.1;
 
+	// creation des levels
 	public void init (){
 		LevelBuilder lvl = new LevelBuilder();
 		levels = new ArrayList<Level>();
@@ -82,7 +82,7 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 				Bird b = (Bird) (levels.get(0).getElementList().get(0));
 				b.getPos().setX(b.getPos().getX()+b.getVelocityX());
 				b.getPos().setY(b.getPos().getY()+b.getVelocityY());
-				b.setVelocityY(b.getVelocityY()+gravite);
+				b.setVelocityY(b.getVelocityY()+b.getGravity());
 
 				for(Element e :levels.get(0).getElementList()){
 					if(e instanceof Pig && Point.getDistance(b.getPos(), e.getPos()) <= 45){
@@ -128,7 +128,9 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 			gameOver=false;
 			selecting=true;
 		} else if(selecting) {
+			
 			Bird b = (Bird) (levels.get(0).getElementList().get(0));
+			
 			b.setVelocityX((b.getPos().getX() - mouseX) / 20.0);
 			b.setVelocityY((b.getPos().getY() - mouseY) / 20.0);
 			selecting = false;
