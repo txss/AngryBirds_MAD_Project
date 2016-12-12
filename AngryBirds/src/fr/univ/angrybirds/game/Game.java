@@ -22,63 +22,83 @@ import fr.univ.angrybirds.utils.Point;
 
 public class Game extends JPanel implements Runnable, MouseListener, MouseMotionListener{
 	private static final long serialVersionUID = 5937904086840376212L;
+	
+	private final int 	 SKY		= 0;
+	private final int 	 FLOOR 		= 480;
+	private final int 	 LEFT_WALL 	= 0;
+	private final int 	 RIGHT_WALL = 800;
+	private final double WALL_DESC 	= 0.8;
+	
+	private final int BIRD_PATTERN 	= 50;
 
 	private int 			mouseX;
 	private int 			mouseY; 
-	private boolean 		gameOver 	 = false;
-	private boolean 		selecting 	 = true;
-	private int 			currentLevel = 0;
+	private boolean 		gameOver;
+	private boolean 		gameWin;
+	private boolean 		selecting;
 	private Image 			buffer;
-	
+
+	private int 			currentLevel = 0;
+	private int 			currentBird;
+
 	private List<Level> 	levels		 = new ArrayList<Level>();
-	
+
 	private List<Element>	birdsList	 = new ArrayList<Element>();
 	private List<Element>	pigsList	 = new ArrayList<Element>();
 	private List<Element>	obstaclList	 = new ArrayList<Element>();
-	
-	
+
+
 	public Game (){
 		addMouseListener(this);
 		addMouseMotionListener(this);
-		
+
 		gameLoader();
-		
+
 		new Thread(this).start();
 	}//Game()
-	
+
 	private void loadElements () {
 		birdsList 	= levels.get(currentLevel).getBirdsList();
 		pigsList 	= levels.get(currentLevel).getPigsList();
 		obstaclList = levels.get(currentLevel).getObstaclesList();
 	}//loadElements()
-	
+
 	public void gameLoader () {
+		selecting = true;
+		gameOver  = false;
+		gameWin   = false;
+		currentBird = 0;
+
 		LevelBuilder lvlBuilder = new LevelBuilder();
 		levels.add(lvlBuilder.createEasy());
 		levels.add(lvlBuilder.createMedium());
-		
+
 		loadElements();
-		
+
 	}//gameLoader()
 
+	
+	
 	// dessine le contenu de l'ecran dans un buffer puis copie le buffer a l'ecran
 	public void paint (Graphics g2) {
 		if(buffer == null) 
 			buffer = createImage(800, 600);
-		
+
 		Graphics2D g = (Graphics2D) buffer.getGraphics();
-		
+
 		levels.get(currentLevel).buildLevel(g);
-		
+
 		if(selecting) 
 			g.drawLine((int) birdsList.get(0).getPos().getX(), 
-					   (int) birdsList.get(0).getPos().getY(), 
-					   mouseX, mouseY); // montre l'angle et la vitesse
-		
+						(int) birdsList.get(0).getPos().getY(), 
+						mouseX, mouseY); // montre l'angle et la vitesse
+
 		// affichage a l'ecran sans scintillement
 		g2.drawImage(buffer, 0, 0, null);
 	}//paint()
 	
+	
+
 	// boucle qui calcule la position de l'oiseau en vol, effectue l'affichage et teste les conditions de victoire
 	public void run() {
 		while(true) {
@@ -89,65 +109,75 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 			} catch(InterruptedException e) { 
 				System.out.println(e);
 			}
-			
-			if(!selecting && !gameOver){
-					Bird currentBird = (Bird) birdsList.get(0);
-					
-					currentBird.getPos().setX(currentBird.getPos().getX() + currentBird.getVelocityX());
-					currentBird.getPos().setY(currentBird.getPos().getY() + currentBird.getVelocityY());
-					currentBird.setVelocityY(currentBird.getVelocityY() + currentBird.getGravity());
-					
-					Iterator<Element> itr = pigsList.iterator();
-					while(itr.hasNext()) {
-						Element concernedPig = itr.next();
-						
-						if(Point.getDistance(currentBird.getPos(), concernedPig.getPos()) <= 45){
-							//b.setVelocityX(0);
-							currentBird.setVelocityY(0);
-							
-							levels.get(currentLevel).calculScore(concernedPig);
-							
-							itr.remove();
-							
-							currentBird.setVelocityX(currentBird.getVelocityX() * 0.8);
-							
-							levels.get(currentLevel).setMessageText("Pig Killer !");
 
-							if(currentBird.getVelocityX() < 0.6 ){
-								currentBird.setVelocityX(0);
-								currentBird.setVelocityY(0);
-								currentBird.setGravity(0);
-								gameOver = true;
-							}
+			if(!selecting && !gameOver && !gameWin) {
+
+				Bird bird = (Bird) birdsList.get(currentBird);
+
+				bird.getPos().setX(bird.getPos().getX() + bird.getVelocityX());
+				bird.getPos().setY(bird.getPos().getY() + bird.getVelocityY());
+				bird.setVelocityY(bird.getVelocityY() + bird.getGravity());
+
+				Iterator<Element> itr = pigsList.iterator();
+				while(itr.hasNext()) {
+					Element concernedPig = itr.next();
+
+					if(Point.getDistance(bird.getPos(), concernedPig.getPos()) <= 45){
+						//b.setVelocityX(0);
+						bird.setVelocityY(0);
+
+						levels.get(currentLevel).calculScore(concernedPig);
+
+						itr.remove();
+
+						bird.setVelocityX(bird.getVelocityX() * WALL_DESC);
+						bird.setVelocityY(bird.getVelocityY() - 4);
+
+						levels.get(currentLevel).setMessageText("Pig Killer !");
+
+						//Si il reste des cochons
+						if(!pigsList.isEmpty()) {
 							
-							if(pigsList.size() <= 0){
-								levels.get(currentLevel).setMessageText("You Win !");
-								gameOver = true;
+							//Arrêt de l'oiseau s'il touche un cochon à faible vitesse
+							if(bird.isStopped()) {
 								
-								if(currentLevel < levels.size())
-									currentLevel++;
-								else
-									currentLevel = 0;
+								//Nous avons encore des oiseaux
+								if(currentBird < birdsList.size() - 1) {
+									++currentBird;
+								}
+								//Toujours des cochons en jeu, oiseaux épuisés, PERDU !
+								else {
+									levels.get(currentLevel).setMessageText("You Lose ! Retry ?");
+									gameOver = true;
+								}
 							}
 						}
+						// Si tous les cochons ont été tué, GAGNE !
+						else {
+							levels.get(currentLevel).setMessageText("You Win !");
+							gameOver = true;
+							gameWin = true;
+						}
 					}
+				}
 
-					if((currentBird.getPos().getY()+25 > 480 && currentBird.getVelocityY() > 0.001) 
-							|| (currentBird.getPos().getY()-25 < 0 && currentBird.getVelocityY() < -0.001 ))
-						currentBird.setVelocityY(currentBird.getVelocityY()*-0.8);
-	
-					if((currentBird.getPos().getX()+25 > 800 && currentBird.getVelocityX() > 0.001)
-							|| (currentBird.getPos().getX()-25 < 0 && currentBird.getVelocityX() < -0.001 ))
-						currentBird.setVelocityX(currentBird.getVelocityX()*-0.8);
-			
+				if((bird.getPos().getY() > FLOOR && bird.getVelocityY() > 0.001)
+						|| (bird.getPos().getY() - BIRD_PATTERN/2 < SKY && bird.getVelocityY() < -0.001 ))
+					bird.setVelocityY(bird.getVelocityY() * -WALL_DESC);
+
+				if((bird.getPos().getX() + BIRD_PATTERN/2 > RIGHT_WALL && bird.getVelocityX() > 0.001)
+						|| (bird.getPos().getX() - BIRD_PATTERN/2 < SKY && bird.getVelocityX() < -0.001 ))
+					bird.setVelocityX(bird.getVelocityX() * -WALL_DESC);
+				
+				if(bird.getVelocityY() < 0.6 && bird.getVelocityY() > 0.0 && bird.getPos().getY() + 2 > FLOOR){
+					bird.setVelocityX(0);
+					bird.setVelocityY(0);
+					bird.setGravity(0);
+					
+					bird.setStopped(true);
+				}
+
 			}
-			
-			//                // moteur physique
-			//                birdX += velocityX;
-			//                birdY += velocityY;
-			//                velocityY += gravity;
-
-			// redessine
 			repaint();
 		}
 	}
@@ -164,18 +194,23 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 	public void mousePressed  (MouseEvent e) {} //mousePressed()
 	public void mouseReleased (MouseEvent e) {
 		if(gameOver) {
+			if(gameWin)
+				if(currentLevel < levels.size())
+					currentLevel++;
+				else
+					currentLevel = 0;
+
 			gameLoader();
-			gameOver = false;
-			selecting = true;
-		} else if(selecting) {
-			Bird currentBird = (Bird) birdsList.get(0);
-			currentBird.setVelocityX((currentBird.getPos().getX() - mouseX) / 20.0);
-			currentBird.setVelocityY((currentBird.getPos().getY() - mouseY) / 20.0);
+		}
+		else if(selecting) {
+			Bird bird = (Bird) birdsList.get(currentBird);
+			bird.setVelocityX((bird.getPos().getX() - mouseX) / 20.0);
+			bird.setVelocityY((bird.getPos().getY() - mouseY) / 20.0);
 			selecting = false;
 		}
 		repaint();
 	}//mouseReleased()
-	
+
 	public void mouseMoved(MouseEvent e) { 
 		mouseX = e.getX();
 		mouseY = e.getY();
@@ -183,17 +218,17 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 	}//mouseMoved()
 
 	public void mouseDragged(MouseEvent e) { mouseMoved(e); } //mouseDragged()
-	
+
 	// taille de la fenetre
 	public Dimension getPreferredSize() {
 		return new Dimension(800, 600);
 	}//getPreferredSize()
 
-	
+
 	public static void main(String args[]) {
 		Frame frame = new Frame("BIRDS");
 		Game obj = new Game();
-		
+
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent event) {
 				System.exit(0);
@@ -203,5 +238,5 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 		frame.pack();
 		frame.setVisible(true);
 	}//main()
-	
+
 }//Game

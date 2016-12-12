@@ -8,17 +8,17 @@ import fr.univ.angrybirds.factorys.ElementsFactory;
 import fr.univ.angrybirds.utils.Point;
 
 public class LevelBuilder {
-	private final Point scorePos 	= new Point(20, 20); // default values
-	private final Point messagePos 	= new Point(300, 100); // default values
-	private final int 	height 		= 800;
-	private final int 	width 		= 600;
+	private final Point SCORE_POS 	= new Point(20, 20);
+	private final Point MESSAGE_POS = new Point(300, 100);
+	private final int 	HEIGHT 		= 800;
+	private final int 	WITDH 		= 600;
 
 	/* Default Constructor */
 	public LevelBuilder(){}
 	
 	/* Building Methods */
 	public Level createEasy(){
-		Level easy = new Level(height, width, scorePos, messagePos);
+		Level easy = new Level(HEIGHT, WITDH, SCORE_POS, MESSAGE_POS);
 		List<Element> birds = new ArrayList<Element>();
 		List<Element> pigs = new ArrayList<Element>();
 		ElementsFactory elemFactory = new ElementsFactory();
@@ -52,7 +52,7 @@ public class LevelBuilder {
 	
 	
 	public Level createMedium(){
-		Level medium = new Level(height, width, scorePos, messagePos);
+		Level medium = new Level(HEIGHT, WITDH, SCORE_POS, MESSAGE_POS);
 		List<Element> birds = new ArrayList<Element>();
 		List<Element> pigs = new ArrayList<Element>();
 		
@@ -89,7 +89,7 @@ public class LevelBuilder {
 
 	
 	private Level createHard(){
-		Level hard = new Level(height, width, scorePos, messagePos);
+		Level hard = new Level(HEIGHT, WITDH, SCORE_POS, MESSAGE_POS);
 		
 		//TODO
 		
