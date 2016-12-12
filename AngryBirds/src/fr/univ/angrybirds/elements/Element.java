@@ -1,115 +1,47 @@
 package fr.univ.angrybirds.elements;
 
 import java.awt.Graphics;
+import java.awt.Toolkit;
 
 import fr.univ.angrybirds.utils.Point;
 
 public abstract class Element {
-	
-	protected Point pos;
-	String picName;
 
-	private double gravity;
-	private int value;
-	private int height;
-	private int width;
-	
-	
+	protected Point 	pos;
+	protected String	picName;
+	protected double 	gravity = 0.1;
+	protected int 		height = 50;
+	protected int 		width = 50;
+	protected int 		value;
+
+
 	public Element(){}
-	
-	/**
-	 * Construct basic element
-	 * @param pos
-	 * @param picName
-	 */
-	public Element(Point pos, String picName){
-		this.pos = pos;
-		this.picName = picName;
-		this.gravity = 0.1; // default value
-		this.height = 50;	// default value
-		this.width = 50;	// default value
-		this.value = 50;
+
+	/* Getters */
+	public Point 	getPos() 		{ return pos; 	  }
+	public String 	getPicName() 	{ return picName; }
+	public double 	getGravity() 	{ return gravity; }
+	public int 		getHeight() 	{ return height;  }
+	public int 		getWidth() 		{ return width;   }
+	public int 		getValue() 		{ return value;   }
+
+	/* Setters */
+	public void setValue	(int value) 	 { this.value 	= value; 	}
+	public void setGravity	(double gravity) { this.gravity = gravity; 	}
+	public void setPicName	(String picName) { this.picName = picName; 	}
+	public void setPos		(Point pos) 	 { this.pos		= pos; 		}
+	public void setHeight	(int height) 	 { this.height 	= height; 	}
+	public void setWidth	(int width) 	 { this.width 	= width; 	}
+
+
+	/* Members Methods */
+	public Graphics build(Graphics graphic) {
+		graphic.drawImage(Toolkit.getDefaultToolkit().getImage(picName), 
+				(int) pos.getX() - width/2, 
+				(int) pos.getY() - height/2, 
+				height, width, null);
 		
-	}
-	
-	public Element(Point pos, String picName, double gravity){
-		this.pos = pos;
-		this.picName = picName;
-		this.gravity = gravity;
-		this.height = 50;	// default value
-		this.width = 50;	// default value
-		this.value = 50;
-	}
+		return graphic;
+	}//build()
 
-	public Element(Point pos, String picName, double gravity, int picHeigth, int picWidth){
-		this.pos = pos;
-		this.picName = picName;
-		this.gravity = gravity;
-		this.height = picHeigth;
-		this.width = picWidth;
-		this.value = 50;
-	}
-	
-	public Element(Point pos, String picName, int picHeigth, int picWidth){
-		this.pos = pos;
-		this.picName = picName;
-		this.gravity = 0.1;
-		this.height = picHeigth;
-		this.width = picWidth;
-		this.value = 50;
-	}
-	
-	// Begin getters and setters
-	public Point getPos() {
-		return pos;
-	}
-
-	public String getPicName() {
-		return picName;
-	}
-
-	public double getGravity() {
-		return gravity;
-	}
-	
-	public int getHeight() {
-		return height;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public int getValue() {
-		return value;
-	}
-
-	public void setValue(int value) {
-		this.value = value;
-	}
-
-	public void setGravity(double gravity) {
-		this.gravity = gravity;
-	}
-
-	public void setPicName(String picName) {
-		this.picName = picName;
-	}
-
-	public void setPos(Point pos) {
-		this.pos = pos;
-	}
-	
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-	// End getters and setters
-	
-	
-	public abstract Graphics build(Graphics graphic);
-	
-}
+}//Element
