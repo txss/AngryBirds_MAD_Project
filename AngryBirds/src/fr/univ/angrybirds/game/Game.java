@@ -62,16 +62,26 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 		pigsList 	= levels.get(currentLevel).getPigsList();
 		obstaclList = levels.get(currentLevel).getObstaclesList();
 	}//loadElements()
+	
 
 	public void gameLoader () {
+		LevelBuilder lvlBuilder = new LevelBuilder();
+		
 		selecting = true;
 		gameOver  = false;
 		gameWin   = false;
 		currentBird = 0;
 
-		LevelBuilder lvlBuilder = new LevelBuilder();
-		levels.add(lvlBuilder.createEasy());
-		levels.add(lvlBuilder.createMedium());
+		if (levels.isEmpty()) {
+			levels.add(lvlBuilder.createEasy());
+			levels.add(lvlBuilder.createMedium());
+			levels.add(lvlBuilder.createHard());
+		}
+		else {
+			levels.set(0, lvlBuilder.createEasy());
+			levels.set(1, lvlBuilder.createMedium());
+			levels.set(2, lvlBuilder.createHard());
+		}
 
 		loadElements();
 
@@ -97,7 +107,30 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 		g2.drawImage(buffer, 0, 0, null);
 	}//paint()
 	
-	
+	private void checkGameState(Bird bird) {
+		//Si il reste des cochons
+		if(!pigsList.isEmpty()) {
+			if(bird.isStopped()) {
+				//Nous avons encore des oiseaux
+				if(currentBird < birdsList.size() - 1) {
+					System.out.println("On change d'oiseau");
+					++currentBird;
+				}
+				//Toujours des cochons en jeu, oiseaux épuisés, PERDU !
+				else {
+					System.out.println("PERDU");
+					levels.get(currentLevel).setMessageText("You Lose ! Retry ?");
+					gameOver = true;
+				}
+			}
+		}
+		// Si tous les cochons ont été tué, GAGNE !
+		else {
+			levels.get(currentLevel).setMessageText("You Win !");
+			gameOver = true;
+			gameWin = true;
+		}
+	}//checkGameState()
 
 	// boucle qui calcule la position de l'oiseau en vol, effectue l'affichage et teste les conditions de victoire
 	public void run() {
@@ -134,30 +167,9 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 						bird.setVelocityY(bird.getVelocityY() - 4);
 
 						levels.get(currentLevel).setMessageText("Pig Killer !");
-
-						//Si il reste des cochons
-						if(!pigsList.isEmpty()) {
-							
-							//Arrêt de l'oiseau s'il touche un cochon à faible vitesse
-							if(bird.isStopped()) {
-								
-								//Nous avons encore des oiseaux
-								if(currentBird < birdsList.size() - 1) {
-									++currentBird;
-								}
-								//Toujours des cochons en jeu, oiseaux épuisés, PERDU !
-								else {
-									levels.get(currentLevel).setMessageText("You Lose ! Retry ?");
-									gameOver = true;
-								}
-							}
-						}
-						// Si tous les cochons ont été tué, GAGNE !
-						else {
-							levels.get(currentLevel).setMessageText("You Win !");
-							gameOver = true;
-							gameWin = true;
-						}
+						
+						checkGameState(bird);
+						
 					}
 				}
 
@@ -175,6 +187,8 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 					bird.setGravity(0);
 					
 					bird.setStopped(true);
+					
+					checkGameState(bird);
 				}
 
 			}
@@ -195,7 +209,7 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 	public void mouseReleased (MouseEvent e) {
 		if(gameOver) {
 			if(gameWin)
-				if(currentLevel < levels.size())
+				if(currentLevel < levels.size() -1)
 					currentLevel++;
 				else
 					currentLevel = 0;

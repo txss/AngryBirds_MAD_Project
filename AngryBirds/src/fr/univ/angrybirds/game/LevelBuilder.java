@@ -44,7 +44,7 @@ public class LevelBuilder {
 		easy.addPigs(pigs);
 		
 		easy.setBackground("img/fond.png");
-		easy.setMessageText("Let's Start !");
+		easy.setMessageText("LEVEL 1, Let's Start !");
 		easy.setScoreText("0");
 		
 		return easy;
@@ -81,17 +81,46 @@ public class LevelBuilder {
 		medium.addPigs(pigs);
 		
 		medium.setBackground("img/fond.png");
-		medium.setMessageText("La partie commence !");
+		medium.setMessageText("LEVEL 2, Let's Start !");
 		medium.setScoreText("0");
 		
 		return medium;
 	}//createMedium()
 
 	
-	private Level createHard(){
+	public Level createHard(){
 		Level hard = new Level(HEIGHT, WITDH, SCORE_POS, MESSAGE_POS);
 		
-		//TODO
+		List<Element> birds = new ArrayList<Element>();
+		List<Element> pigs  = new ArrayList<Element>();
+		
+		ElementsFactory elemFactory = new ElementsFactory();
+		
+		Element bird  = elemFactory.getElement("LITTLE_RED_BIRD");
+		Element bird2 = elemFactory.getElement("BIG_RED_BIRD");
+		Element pig   = elemFactory.getElement("NORMAL_PIG");
+		Element pig2  = elemFactory.getElement("KING_PIG");
+		Element pig3  = elemFactory.getElement("ARMOR_PIG");
+		
+		bird.setPos(new Point(100, 400));
+		bird2.setPos(new Point(50, 480));
+		pig.setPos(new Point(Math.random() * 500 + 200, 480));
+		pig2.setPos(new Point(320, 480));
+		pig3.setPos(new Point(600, 480));
+		
+		birds.add(bird);
+		birds.add(bird2);
+		
+		pigs.add(pig);
+		pigs.add(pig2);
+		pigs.add(pig3);
+
+		hard.addBirds(birds);
+		hard.addPigs(pigs);
+		
+		hard.setBackground("img/fond.png");
+		hard.setMessageText("LEVEL 3, Let's Start !");
+		hard.setScoreText("0");
 		
 		return hard;
 	}//createHard
