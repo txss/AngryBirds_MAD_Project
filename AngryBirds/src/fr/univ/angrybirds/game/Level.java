@@ -1,6 +1,7 @@
 package fr.univ.angrybirds.game;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
@@ -96,7 +97,11 @@ public class Level {
 		g.drawImage(Toolkit.getDefaultToolkit().getImage(background), 0, 0, windowsHeight, windowsWidth, null);
 		g.setColor(color);
 	    g.drawString(messageText, (int)messagePos.getX(), (int)messagePos.getY());
+	    
+	    g.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 30));
+	    g.setColor(Color.DARK_GRAY);
 	    g.drawString("score: " + scoreText, (int)scorePos.getX(), (int)scorePos.getY());
+	    g.setColor(Color.RED);
 	    
 	    for(int i = 0; i < elementsMap.get("BIRDS").size(); i++)
 	    	elementsMap.get("BIRDS").get(i).build(g2);

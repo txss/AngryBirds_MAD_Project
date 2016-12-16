@@ -8,7 +8,7 @@ import fr.univ.angrybirds.game.Level;
 import fr.univ.angrybirds.utils.Point;
 
 public class LevelBuilder {
-	private final Point SCORE_POS 	= new Point(20, 20);
+	private final Point SCORE_POS 	= new Point(20, 40);
 	private final Point MESSAGE_POS = new Point(300, 100);
 	private final int 	HEIGHT 		= 800;
 	private final int 	WITDH 		= 600;
@@ -65,7 +65,10 @@ public class LevelBuilder {
 		Element pig3  = elemFactory.getElement("ARMOR_PIG");
 		
 		bird.setPos(new Point(100, 400));
+		
 		bird2.setPos(new Point(50, 480));
+		bird2.setGravity(0.2);
+		
 		pig.setPos(new Point(Math.random() * 500 + 200, 480));
 		pig2.setPos(new Point(320, 480));
 		pig3.setPos(new Point(600, 480));

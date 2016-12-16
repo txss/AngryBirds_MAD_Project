@@ -83,6 +83,9 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 		gameOver  = false;
 		gameWin   = false;
 		currentBird = 0;
+		
+		mouseX = 100;
+		mouseY = 400;
 
 		if (levels.isEmpty()) {
 			levels.add(lvlBuilder.createEasy());
@@ -219,6 +222,7 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 	public void mouseEntered  (MouseEvent e) {} //mouseEntered()
 	public void mouseExited   (MouseEvent e) {} //mouseExited()
 	public void mousePressed  (MouseEvent e) {} //mousePressed()
+	public void mouseMoved	  (MouseEvent e) {} //mouseMoved()
 	public void mouseReleased (MouseEvent e) {
 		if(gameOver) {
 			if(gameWin)
@@ -238,13 +242,12 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 		repaint();
 	}//mouseReleased()
 
-	public void mouseMoved(MouseEvent e) { 
+
+	public void mouseDragged(MouseEvent e) { 
 		mouseX = e.getX();
 		mouseY = e.getY();
-		repaint();
-	}//mouseMoved()
-
-	public void mouseDragged(MouseEvent e) { mouseMoved(e); } //mouseDragged()
+		repaint(); 
+	} //mouseDragged()
 
 	// taille de la fenetre
 	public Dimension getPreferredSize() {
