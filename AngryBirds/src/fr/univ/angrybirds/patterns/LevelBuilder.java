@@ -1,10 +1,10 @@
-package fr.univ.angrybirds.game;
+package fr.univ.angrybirds.patterns;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.univ.angrybirds.elements.Element;
-import fr.univ.angrybirds.factorys.ElementsFactory;
+import fr.univ.angrybirds.game.Level;
 import fr.univ.angrybirds.utils.Point;
 
 public class LevelBuilder {

@@ -14,7 +14,6 @@ public abstract class Element {
 	protected int 		width = 50;
 	protected int 		value;
 
-
 	public Element(){}
 
 	/* Getters */

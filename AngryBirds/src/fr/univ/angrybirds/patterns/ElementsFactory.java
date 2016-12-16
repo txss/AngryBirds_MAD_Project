@@ -1,4 +1,4 @@
-package fr.univ.angrybirds.factorys;
+package fr.univ.angrybirds.patterns;
 
 import fr.univ.angrybirds.elements.Bird;
 import fr.univ.angrybirds.elements.Element;
