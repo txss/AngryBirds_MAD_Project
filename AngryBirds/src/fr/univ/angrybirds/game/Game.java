@@ -24,12 +24,11 @@ import fr.univ.angrybirds.utils.Point;
 public class Game extends JPanel implements Runnable, MouseListener, MouseMotionListener{
 	private static final long serialVersionUID = 5937904086840376212L;
 	
-	private static final int 	 	SKY				= 0;
-	private static final int 	 	FLOOR 			= 480;
-	private static final int 	 	LEFT_WALL 		= 0;
-	private static final int 	 	RIGHT_WALL 		= 800;
-	private static final int 		BIRD_PATTERN	= 50;
-	private static final double 	VELOCITYY_MIN 	= 0.6;
+	private static final double SKY				= 0.0;
+	private static final double FLOOR 			= 480.0;
+	private static final double LEFT_WALL 		= 0.0;
+	private static final double RIGHT_WALL 		= 800.0;
+	private static final double MIN_SPEED	 	= 0.6;
 
 	private int 			mouseX;
 	private int 			mouseY; 
@@ -170,7 +169,7 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 				System.out.println(e);
 			}
 
-			// Si l'oiseau est en mouvement dans les airs
+			// Si l'oiseau est en mouvement
 			if(!selecting && !gameOver && !gameWin) {
 				Bird bird = (Bird) birdsList.get(currentBird);
 				engine.birdMove(bird);
@@ -181,7 +180,7 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 					Element concernedPig = itr.next();
 
 					//Si l'oiseau touche un cochon
-					if(Point.getDistance(bird.getPos(), concernedPig.getPos()) <= 45) {
+					if(bird.isHitted(concernedPig)) {
 						
 						itr.remove();
 
@@ -195,18 +194,15 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 				}
 
 				// Si l'oiseau touche le sol ou le ciel il repart dans l'autre sens sur Y
-				if((bird.getPos().getY() > FLOOR && bird.getVelocityY() > 0.001)
-						|| (bird.getPos().getY() - BIRD_PATTERN/2 < SKY && bird.getVelocityY() < -0.001 ))
+				if(bird.isOnFloor(FLOOR) || bird.isOnSky(SKY))
 					engine.birdHitTopOrBot(bird);
 
 				//Si l'oiseau touche un le mur droit ou gauche il repart dans l'autre sens sur X
-				if((bird.getPos().getX() + BIRD_PATTERN/2 > RIGHT_WALL && bird.getVelocityX() > 0.001)
-						|| (bird.getPos().getX() - BIRD_PATTERN/2 < LEFT_WALL && bird.getVelocityX() < -0.001 ))
+				if(bird.isHitWalls(LEFT_WALL, RIGHT_WALL))
 					engine.birdHitWall(bird);
 				
 				//Si l'oiseau perd trop de vitesse il s'arrête
-				if(bird.getVelocityY() < VELOCITYY_MIN && bird.getVelocityY() > 0.0 
-						&& bird.getPos().getY() + 2 > FLOOR) {
+				if(bird.isTooSlow(MIN_SPEED) && bird.getPos().getY() + 2 > FLOOR) {
 					engine.birdToSlow(bird);
 					checkGameState(bird);
 				}
@@ -214,7 +210,7 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 			}
 			repaint();
 		}
-	}
+	}//run()
 
 
 	// gestion des evenements souris

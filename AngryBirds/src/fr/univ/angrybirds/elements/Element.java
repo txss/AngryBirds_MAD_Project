@@ -42,5 +42,9 @@ public abstract class Element {
 		
 		return graphic;
 	}//build()
+	
+	public boolean isHitted(Element elem) {
+		return Point.getDistance(this.getPos(), elem.getPos()) <= elem.getHeight();
+	}
 
 }//Element

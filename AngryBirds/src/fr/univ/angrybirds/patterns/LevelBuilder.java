@@ -20,7 +20,7 @@ public class LevelBuilder {
 	public Level createEasy(){
 		Level easy = new Level(HEIGHT, WITDH, SCORE_POS, MESSAGE_POS);
 		List<Element> birds = new ArrayList<Element>();
-		List<Element> pigs = new ArrayList<Element>();
+		List<Element> pigs  = new ArrayList<Element>();
 		ElementsFactory elemFactory = new ElementsFactory();
 		
 		Element bird = elemFactory.getElement("LITTLE_RED_BIRD");
@@ -85,7 +85,6 @@ public class LevelBuilder {
 		
 		medium.setBackground("img/fond.png");
 		medium.setMessageText("LEVEL 2, Let's Start !");
-		medium.setScoreText("0");
 		
 		return medium;
 	}//createMedium()
