@@ -67,7 +67,7 @@ public class LevelBuilder {
 		bird.setPos(new Point(100, 400));
 		
 		bird2.setPos(new Point(50, 480));
-		bird2.setGravity(0.2);
+		bird2.setGravity(0.3);
 		
 		pig.setPos(new Point(Math.random() * 500 + 200, 480));
 		pig2.setPos(new Point(320, 480));
@@ -85,6 +85,7 @@ public class LevelBuilder {
 		
 		medium.setBackground("img/fond.png");
 		medium.setMessageText("LEVEL 2, Let's Start !");
+		medium.setScoreText("0");
 		
 		return medium;
 	}//createMedium()
@@ -106,6 +107,7 @@ public class LevelBuilder {
 		
 		bird.setPos(new Point(100, 400));
 		bird2.setPos(new Point(50, 480));
+		bird2.setGravity(0.3);
 		pig.setPos(new Point(Math.random() * 500 + 200, 480));
 		pig2.setPos(new Point(320, 480));
 		pig3.setPos(new Point(600, 480));
