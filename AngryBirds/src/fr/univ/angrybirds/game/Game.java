@@ -61,6 +61,7 @@ public class Game extends JPanel implements Runnable, MouseListener, MouseMotion
 		new Thread(this).start();
 	}//Game()
 
+	
 	/**
 	 * Chargement des différents éléments présent dans le niveau courant
 	 */
